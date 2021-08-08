@@ -37,6 +37,8 @@ RSpec.describe 'merchant dashboard' do
     @transaction6 = Transaction.create!(credit_card_number: 879799, result: 1, invoice_id: @invoice_7.id)
     @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_2.id)
 
+    @bulkdiscount1 = @merchant1.bulk_discounts.create!(percentage_discount: 10, quantity_threshold: 5)
+    @bulkdiscount2 = @merchant1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 20)
     visit merchant_dashboard_index_path(@merchant1)
   end
 
@@ -45,17 +47,17 @@ RSpec.describe 'merchant dashboard' do
   end
 
   it 'can see a link to my merchant items index' do
-    expect(page).to have_link("Items")
+    expect(page).to have_link("My Items")
 
-    click_link "Items"
+    click_link "My Items"
 
     expect(current_path).to eq("/merchant/#{@merchant1.id}/items")
   end
 
   it 'can see a link to my merchant invoices index' do
-    expect(page).to have_link("Invoices")
+    expect(page).to have_link("My Invoices")
 
-    click_link "Invoices"
+    click_link "My Invoices"
 
     expect(current_path).to eq("/merchant/#{@merchant1.id}/invoices")
   end
@@ -114,5 +116,31 @@ RSpec.describe 'merchant dashboard' do
 
   it "shows the date that the invoice was created in this format: Monday, July 18, 2019" do
     expect(page).to have_content(@invoice_1.created_at.strftime("%A, %B %-d, %Y"))
+  end
+
+#   Merchant Bulk Discounts Index
+#   As a merchant x
+#   When I visit my merchant dashboard x
+#   Then I see a link to view all my discounts x
+#   When I click this link x
+#   Then I am taken to my bulk discounts index page x
+#   Where I see all of my bulk discounts including their x
+#   percentage discount and quantity thresholds x
+#   And each bulk discount listed includes a link to its show page x
+  it "shows a link to view all my bulk discounts" do
+    expect(page).to have_link("My Discounts")
+    click_on "My Discounts"
+
+    expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discounts")
+
+    expect(page).to have_content(@bulkdiscount1.id)
+    expect(page).to have_content(@bulkdiscount1.percentage_discount)
+    expect(page).to have_content(@bulkdiscount1.quantity_threshold)
+    expect(page).to have_link("Discount #{@bulkdiscount1.id} Show Page")
+
+    expect(page).to have_content(@bulkdiscount2.id)
+    expect(page).to have_content(@bulkdiscount2.percentage_discount)
+    expect(page).to have_content(@bulkdiscount2.quantity_threshold)
+    expect(page).to have_link("Discount #{@bulkdiscount2.id} Show Page")
   end
 end
