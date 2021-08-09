@@ -29,4 +29,11 @@ class BulkDiscountsController < ApplicationController
     #dane, 8/8: do i need this if i make the association via the merchant?
     @bulk_discount = BulkDiscount.find(params[:id])
   end
+
+  def destroy
+    @merchant = Merchant.find(params[:merchant_id])
+    @bulk_discount = @merchant.bulk_discounts.destroy(params[:id])
+
+    redirect_to merchant_bulk_discounts_path(@merchant)
+  end
 end
