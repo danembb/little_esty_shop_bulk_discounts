@@ -60,7 +60,13 @@ RSpec.describe 'merchant bulk discount index page' do
 
       click_on "Create New Discount"
 
-      expect(current_path).to be(new_merchant_bulk_discount_path)
+      expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant1.id))
+
+      fill_in "Percentage Discount", with: "#{@bulkdiscount2.percentage_discount}"
+      fill_in "Quantity Threshold", with: "#{@bulkdiscount2.quantity_threshold}"
+
+      click_on "Submit"
+      expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1.id))
     end
   end
 end
