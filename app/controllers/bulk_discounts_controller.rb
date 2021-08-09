@@ -23,4 +23,10 @@ class BulkDiscountsController < ApplicationController
       flash[:notice] = "Please fill in valid information!"
     end
   end
+
+  def show
+    @merchant = Merchant.find(params[:merchant_id])
+    #dane, 8/8: do i need this if i make the association via the merchant?
+    @bulk_discount = BulkDiscount.find(params[:id])
+  end
 end
