@@ -100,19 +100,20 @@ RSpec.describe 'merchant bulk discount index page' do
   # Next to each bulk discount I see a link to delete it x
   # When I click this link x
   # Then I am redirected back to the bulk discounts index page x
-  # And I no longer see the discount listed
+  # And I no longer see the discount listed x
     it 'can delete a bulk discount' do
 
       within("#discount#{@bulk_discount2.id}") do
         expect(page).to have_link("Delete This Discount")
-        save_and_open_page
+
         click_on "Delete This Discount"
-        save_and_open_page
+
         expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1))
-        expect(page).to_not have_content("#{@bulk_discount2.id}")
-        expect(page).to_not have_content("#{@bulk_discount2.percentage_discount}")
-        expect(page).to_not have_content("#{@bulk_discount2.quantity_threshold}")
       end
+
+    expect(page).to_not have_content("#{@bulk_discount2.id}")
+    expect(page).to_not have_content("#{@bulk_discount2.percentage_discount}")
+    expect(page).to_not have_content("#{@bulk_discount2.quantity_threshold}")
     end
   end
 end
