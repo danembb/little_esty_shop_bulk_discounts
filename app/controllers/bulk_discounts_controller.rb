@@ -26,7 +26,15 @@ class BulkDiscountsController < ApplicationController
 
   def show
     @merchant = Merchant.find(params[:merchant_id])
-    #dane, 8/8: do i need this if i make the association via the merchant?
+    #dane, 8/8l: do i need this if i make the association via the merchant?
     @bulk_discount = BulkDiscount.find(params[:id])
+  end
+
+  def destroy
+    @merchant = Merchant.find(params[:merchant_id])
+    #dane, 8/9e: would it be preferred for this to be @bulk_discount = Merchant.find(params[:id])?
+    @bulk_discount = @merchant.bulk_discounts.destroy(params[:id])
+
+    redirect_to merchant_bulk_discounts_path(@merchant)
   end
 end

@@ -37,8 +37,8 @@ RSpec.describe 'merchant bulk discount index page' do
     @transaction6 = Transaction.create!(credit_card_number: 879799, result: 1, invoice_id: @invoice_7.id)
     @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_2.id)
 
-    @bulkdiscount1 = @merchant1.bulk_discounts.create!(percentage_discount: 10, quantity_threshold: 5)
-    @bulkdiscount2 = @merchant1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 20)
+    @bulk_discount1 = @merchant1.bulk_discounts.create!(percentage_discount: 10, quantity_threshold: 5)
+    @bulk_discount2 = @merchant1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 20)
 
     visit merchant_bulk_discounts_path(@merchant1)
   end
@@ -52,7 +52,6 @@ RSpec.describe 'merchant bulk discount index page' do
   # When I fill in the form with valid data x
   # Then I am redirected back to the bulk discount index x
   # And I see my new bulk discount listed x
-
   describe 'merchant bulk discounts index' do
     it 'can create a new bulk discount' do
 
@@ -75,12 +74,12 @@ RSpec.describe 'merchant bulk discount index page' do
     end
 
     it 'has a link to each discount show page' do
-      within "#discount#{@bulkdiscount1.id}" do
-        expect(page).to have_link("Discount #{@bulkdiscount1.id} Show Page")
+      within "#discount#{@bulk_discount1.id}" do
+        expect(page).to have_link("Discount #{@bulk_discount1.id} Show Page")
       end
 
-      within "#discount#{@bulkdiscount2.id}" do
-        expect(page).to have_link("Discount #{@bulkdiscount2.id} Show Page")
+      within "#discount#{@bulk_discount2.id}" do
+        expect(page).to have_link("Discount #{@bulk_discount2.id} Show Page")
       end
     end
 
@@ -93,6 +92,28 @@ RSpec.describe 'merchant bulk discount index page' do
 
       expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant1.id))
       expect(page).to have_content("Please fill in valid information!")
+    end
+
+  # Merchant Bulk Discount Delete
+  # As a merchant x
+  # When I visit my bulk discounts index x
+  # Next to each bulk discount I see a link to delete it x
+  # When I click this link x
+  # Then I am redirected back to the bulk discounts index page x
+  # And I no longer see the discount listed x
+    it 'can delete a bulk discount' do
+
+      within("#discount#{@bulk_discount2.id}") do
+        expect(page).to have_link("Delete This Discount")
+
+        click_on "Delete This Discount"
+
+        expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1))
+      end
+
+    expect(page).to_not have_content("#{@bulk_discount2.id}")
+    expect(page).to_not have_content("#{@bulk_discount2.percentage_discount}")
+    expect(page).to_not have_content("#{@bulk_discount2.quantity_threshold}")
     end
   end
 end

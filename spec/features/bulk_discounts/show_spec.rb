@@ -37,10 +37,10 @@ RSpec.describe 'merchant bulk discount show page' do
     @transaction6 = Transaction.create!(credit_card_number: 879799, result: 1, invoice_id: @invoice_7.id)
     @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_2.id)
 
-    @bulkdiscount1 = @merchant1.bulk_discounts.create!(percentage_discount: 10, quantity_threshold: 5)
-    @bulkdiscount2 = @merchant1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 20)
+    @bulk_discount1 = @merchant1.bulk_discounts.create!(percentage_discount: 10, quantity_threshold: 5)
+    @bulk_discount2 = @merchant1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 20)
 
-    visit merchant_bulk_discount_path(@merchant1, @bulkdiscount1)
+    visit merchant_bulk_discount_path(@merchant1, @bulk_discount1)
   end
 
   # Merchant Bulk Discount Show
@@ -49,7 +49,7 @@ RSpec.describe 'merchant bulk discount show page' do
   # Then I see the bulk discount's quantity threshold and percentage discount x
   it 'can see the bulk discounts attributes' do
 
-    expect(page).to have_content(@bulkdiscount1.percentage_discount)
-    expect(page).to have_content(@bulkdiscount1.quantity_threshold)
+    expect(page).to have_content(@bulk_discount1.percentage_discount)
+    expect(page).to have_content(@bulk_discount1.quantity_threshold)
   end
 end
