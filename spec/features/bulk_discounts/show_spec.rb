@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'merchant bulk discount index page' do
+RSpec.describe 'merchant bulk discount show page' do
   before :each do
     @merchant1 = Merchant.create!(name: 'Hair Care')
 
@@ -40,59 +40,16 @@ RSpec.describe 'merchant bulk discount index page' do
     @bulkdiscount1 = @merchant1.bulk_discounts.create!(percentage_discount: 10, quantity_threshold: 5)
     @bulkdiscount2 = @merchant1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 20)
 
-    visit merchant_bulk_discounts_path(@merchant1)
+    visit merchant_bulk_discount_path(@merchant1, @bulkdiscount1)
   end
 
-  # Merchant Bulk Discount Create
+  # Merchant Bulk Discount Show
   # As a merchant x
-  # When I visit my bulk discounts index x
-  # Then I see a link to create a new discount x
-  # When I click this link x
-  # Then I am taken to a new page where I see a form to add a new bulk discount x
-  # When I fill in the form with valid data x
-  # Then I am redirected back to the bulk discount index x
-  # And I see my new bulk discount listed x
+  # When I visit my bulk discount show page x
+  # Then I see the bulk discount's quantity threshold and percentage discount x
+  it 'can see the bulk discounts attributes' do
 
-  describe 'merchant bulk discounts index' do
-    it 'can create a new bulk discount' do
-
-      expect(page).to have_link("Create New Discount")
-
-      click_on "Create New Discount"
-
-      expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant1.id))
-      expect(page).to have_content("Percentage Discount:")
-      expect(page).to have_content("Quantity Threshold:")
-
-      fill_in("percentage_discount", with: 35)
-      fill_in("quantity_threshold", with: 50)
-
-      click_on "Create Bulk Discount"
-
-      expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1.id))
-      expect(page).to have_content(35)
-      expect(page).to have_content(50)
-    end
-
-    it 'has a link to each discount show page' do
-      within "#discount#{@bulkdiscount1.id}" do
-        expect(page).to have_link("Discount #{@bulkdiscount1.id} Show Page")
-      end
-
-      within "#discount#{@bulkdiscount2.id}" do
-        expect(page).to have_link("Discount #{@bulkdiscount2.id} Show Page")
-      end
-    end
-
-    it 'can display flash message error if the user fails to fill in the appropriate data' do
-      visit new_merchant_bulk_discount_path(@merchant1.id)
-
-      fill_in("percentage_discount", with: 60)
-
-      click_on("Create Bulk Discount")
-
-      expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant1.id))
-      expect(page).to have_content("Please fill in valid information!")
-    end
+    expect(page).to have_content(@bulkdiscount1.percentage_discount)
+    expect(page).to have_content(@bulkdiscount1.quantity_threshold)
   end
 end
