@@ -67,11 +67,23 @@ RSpec.describe 'merchant bulk discount index page' do
       fill_in("percentage_discount", with: 35)
       fill_in("quantity_threshold", with: 50)
 
-      click_on "Submit"
-      save_and_open_page
+      click_on "Create Bulk Discount"
+
       expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1.id))
       expect(page).to have_content(35)
       expect(page).to have_content(50)
+    end
+
+    it 'can display flash message error if the user fails to fill in the appropriate data' do
+      visit new_merchant_bulk_discount_path(@merchant1.id)
+
+      fill_in("percentage_discount", with: 60)
+
+      click_on("Create Bulk Discount")
+      save_and_open_page
+
+      expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant1.id))
+      expect(page).to have_content("Please fill in valid information!")
     end
   end
 end

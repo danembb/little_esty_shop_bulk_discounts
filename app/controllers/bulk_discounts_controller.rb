@@ -21,7 +21,6 @@ class BulkDiscountsController < ApplicationController
     else
       redirect_to new_merchant_bulk_discount_path
       flash[:notice] = "Please fill in valid information!"
-
     end
   end
 end
