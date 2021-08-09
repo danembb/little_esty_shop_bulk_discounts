@@ -1,0 +1,12 @@
+<h2>Editing Bulk Discount #<%= "#{@bulk_discount.id}" %></h2>
+
+<%= form_with url: merchant_bulk_discount_path(@merchant, @bulk_discount), method: :patch, local: true do |form| %>
+
+  <%= form.label :percentage_discount, "Percentage Discount:" %>
+  <%= form.text_field :percentage_discount, value: @bulk_discount.percentage_discount %></br>
+
+  <%= form.label :quantity_threshold, "Quantity Threshold:" %>
+  <%= form.text_field :quantity_threshold, value: @bulk_discount.quantity_threshold %></br>
+
+  <%= form.submit 'Update Discount' %>
+<% end %>

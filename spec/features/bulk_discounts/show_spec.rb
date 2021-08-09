@@ -37,7 +37,7 @@ RSpec.describe 'merchant bulk discount show page' do
     @transaction6 = Transaction.create!(credit_card_number: 879799, result: 1, invoice_id: @invoice_7.id)
     @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_2.id)
 
-    @bulk_discount1 = @merchant1.bulk_discounts.create!(percentage_discount: 10, quantity_threshold: 5)
+    @bulk_discount1 = @merchant1.bulk_discounts.create!(percentage_discount: 15, quantity_threshold: 8)
     @bulk_discount2 = @merchant1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 20)
 
     visit merchant_bulk_discount_path(@merchant1, @bulk_discount1)
@@ -51,5 +51,48 @@ RSpec.describe 'merchant bulk discount show page' do
 
     expect(page).to have_content(@bulk_discount1.percentage_discount)
     expect(page).to have_content(@bulk_discount1.quantity_threshold)
+  end
+
+  # Merchant Bulk Discount Edit
+  # As a merchant x
+  # When I visit my bulk discount show page x
+  # Then I see a link to edit the bulk discount x
+  # When I click this link x
+  # Then I am taken to a new page with a form to edit the discount x
+  # And I see that the discounts current attributes are pre-populated in the form x
+  # When I change any/all of the information and click submit x
+  # Then I am redirected to the bulk discount's show page x
+  # And I see that the discount's attributes have been updated x
+  it 'can edit a bulk discount' do
+    expect(page).to have_link("Edit This Discount")
+
+    click_on("Edit This Discount")
+
+    expect(current_path).to eq(edit_merchant_bulk_discount_path(@merchant1, @bulk_discount1))
+    expect(page).to have_content("Percentage Discount:")
+    expect(page).to have_content("Quantity Threshold:")
+    expect(page).to have_content(@bulk_discount1.id)
+    expect(find_field(:percentage_discount).value).to eq(@bulk_discount1.percentage_discount.to_s)
+    expect(find_field(:quantity_threshold).value).to eq(@bulk_discount1.quantity_threshold.to_s)
+
+    fill_in("percentage_discount", with: 20)
+    fill_in("quantity_threshold", with: 16)
+
+    click_on "Update Discount"
+    expect(current_path).to eq(merchant_bulk_discount_path(@merchant1, @bulk_discount1))
+    expect(page).to have_content(20)
+    expect(page).to have_content(16)
+  end
+
+  it 'redirects back to edit page if no information is entered' do
+    visit edit_merchant_bulk_discount_path(@merchant1, @bulk_discount1)
+
+    fill_in("percentage_discount", with: 100)
+    fill_in("percentage_discount", with: "")
+
+    click_on "Update Discount"
+
+    expect(current_path).to eq(edit_merchant_bulk_discount_path(@merchant1, @bulk_discount1))
+    expect(page).to have_content("Please fill in valid information!")
   end
 end
