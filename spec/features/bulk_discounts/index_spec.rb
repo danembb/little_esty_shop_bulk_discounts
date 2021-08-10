@@ -43,16 +43,29 @@ RSpec.describe 'merchant bulk discount index page' do
     visit merchant_bulk_discounts_path(@merchant1)
   end
 
-  # Merchant Bulk Discount Create
-  # As a merchant x
-  # When I visit my bulk discounts index x
-  # Then I see a link to create a new discount x
-  # When I click this link x
-  # Then I am taken to a new page where I see a form to add a new bulk discount x
-  # When I fill in the form with valid data x
-  # Then I am redirected back to the bulk discount index x
-  # And I see my new bulk discount listed x
   describe 'merchant bulk discounts index' do
+
+#   As a merchant
+#   When I visit the discounts index page
+#   I see a section with a header of "Upcoming Holidays"
+#   In this section the name and date of the next 3 upcoming US holidays are listed.
+#   Use the Next Public Holidays Endpoint in the [Nager.Date API](https://date.nager.at/swagger/index.html)
+    it 'can see upcoming holidays header' do
+
+      expect(page).to have_content("Upcoming Holidays")
+      # expect(page).to have_content(
+
+    end
+
+    # Merchant Bulk Discount Create
+    # As a merchant x
+    # When I visit my bulk discounts index x
+    # Then I see a link to create a new discount x
+    # When I click this link x
+    # Then I am taken to a new page where I see a form to add a new bulk discount x
+    # When I fill in the form with valid data x
+    # Then I am redirected back to the bulk discount index x
+    # And I see my new bulk discount listed x
     it 'can create a new bulk discount' do
 
       expect(page).to have_link("Create New Discount")
@@ -102,8 +115,8 @@ RSpec.describe 'merchant bulk discount index page' do
   # Then I am redirected back to the bulk discounts index page x
   # And I no longer see the discount listed x
     it 'can delete a bulk discount' do
-
       within("#discount#{@bulk_discount2.id}") do
+
         expect(page).to have_link("Delete This Discount")
 
         click_on "Delete This Discount"

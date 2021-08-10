@@ -61,6 +61,9 @@ describe Merchant do
       @transaction6 = Transaction.create!(credit_card_number: 879799, result: 0, invoice_id: @invoice_6.id)
       @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_7.id)
 
+      @bulk_discount1 = @merchant1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 8)
+      @bulk_discount2 = @merchant1.bulk_discounts.create!(percentage_discount: 10, quantity_threshold: 20)
+      @bulk_discount2 = @merchant1.bulk_discounts.create!(percentage_discount: 5, quantity_threshold: 30)
     end
     it "can list items ready to ship" do
       expect(@merchant1.ordered_items_to_ship).to eq([@item_1, @item_1, @item_3, @item_4, @item_7, @item_8, @item_4])
@@ -74,6 +77,16 @@ describe Merchant do
 
     it "top_5_items" do
       expect(@merchant1.top_5_items).to eq([@item_1, @item_2, @item_3, @item_8, @item_4])
+    end
+
+    it "#minimum_quantity_for_discount" do
+
+      expect(@merchant1.minimum_quantity_for_discount).to eq(8)
+    end
+
+    it "#max_discount_for_quantity" do
+
+      expect(@merchant1.max_discount_for_quantity(100)).to eq(20)
     end
   end
 end

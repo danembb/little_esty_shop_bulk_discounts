@@ -62,4 +62,16 @@ class Merchant < ApplicationRecord
       .to_date
     end
   end
+
+  def minimum_quantity_for_discount
+    # out of all bulk discounts, what is the lowest quantity needed
+    # to qualify for a discount
+    bulk_discounts.minimum(:quantity_threshold)
+  end
+
+  def max_discount_for_quantity(quantity)
+    bulk_discounts
+    .where('quantity_threshold <= ?', quantity)
+    .maximum(:percentage_discount)
+  end
 end

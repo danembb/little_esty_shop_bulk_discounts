@@ -9,6 +9,8 @@ class InvoicesController < ApplicationController
   def show
     @customer = @invoice.customer
     @invoice_item = InvoiceItem.where(invoice_id: params[:id]).first
+    @total_revenue = @invoice.total_revenue
+    @total_discounted_revenue = total_discounted_revenue
   end
 
   def update
@@ -29,4 +31,5 @@ class InvoicesController < ApplicationController
   def find_merchant
     @merchant = Merchant.find(params[:merchant_id])
   end
+
 end
