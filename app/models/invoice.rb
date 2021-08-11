@@ -13,4 +13,9 @@ class Invoice < ApplicationRecord
   def total_revenue
     invoice_items.sum("unit_price * quantity")
   end
+
+  def distinct_merchant
+    merchants.distinct(:name)
+             .first
+  end
 end

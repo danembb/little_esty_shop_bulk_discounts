@@ -80,8 +80,9 @@ class Merchant < ApplicationRecord
     .where('invoice_id = ?', invoice)
 
     merchants_invoice_items.each do |ii|
-      if ii.quantity >= self.minimum_quantity_for_discount
-
+      if self.minimum_quantity_for_discount == nil
+        discounted_revenue += (ii.quantity * ii.unit_price)
+      elsif ii.quantity >= self.minimum_quantity_for_discount
         discounted_revenue += ((ii.quantity * ii.unit_price) - ((ii.quantity * ii.unit_price) * (self.max_discount_for_quantity(ii.quantity) / 100.00)))
       else
         discounted_revenue += (ii.quantity * ii.unit_price)

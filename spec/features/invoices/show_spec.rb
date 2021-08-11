@@ -111,7 +111,7 @@ RSpec.describe 'invoices show' do
   # And I see the total discounted revenue for my merchant from this invoice which includes bulk discounts in the calculation x
   it 'can see the total revenue and the total discounted revenue including bulk discount in-calculation' do
     visit merchant_invoice_path(@merchant1, @invoice_1)
-
+    
     expect(page).to have_content(@invoice_1.total_revenue)
     expect(page).to have_content(@merchant1.total_discounted_revenue(@invoice_1))
   end
