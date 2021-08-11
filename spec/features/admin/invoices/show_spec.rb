@@ -17,6 +17,10 @@ describe 'Admin Invoices Index Page' do
     @ii_2 = InvoiceItem.create!(invoice_id: @i1.id, item_id: @item_2.id, quantity: 6, unit_price: 1, status: 1)
     @ii_3 = InvoiceItem.create!(invoice_id: @i2.id, item_id: @item_2.id, quantity: 87, unit_price: 12, status: 2)
 
+    @bulk_discount1 = @m1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 8)
+    @bulk_discount2 = @m1.bulk_discounts.create!(percentage_discount: 10, quantity_threshold: 20)
+    @bulk_discount3 = @m1.bulk_discounts.create!(percentage_discount: 5, quantity_threshold: 30)
+
     visit admin_invoice_path(@i1)
   end
 
@@ -68,5 +72,21 @@ describe 'Admin Invoices Index Page' do
       expect(current_path).to eq(admin_invoice_path(@i1))
       expect(@i1.status).to eq('completed')
     end
+  end
+
+  # Admin Invoice Show Page: Total Revenue and Discounted Revenue
+  # As an admin x
+  # When I visit an admin invoice show page x
+  # Then I see the total revenue from this invoice (not including discounts) x
+  # And I see the total discounted revenue from this invoice which includes bulk discounts in the calculation x
+  it 'can see the total revenue and the total discounted revenue including bulk discount in-calculation' do
+
+    expect(page).to have_content(@i1.total_revenue)
+    expect(page).to have_content(@m1.total_discounted_revenue(@i1))
+  end
+
+  it "#distinct_merchant" do
+
+    expect(@i1.distinct_merchant).to eq(@m1)
   end
 end
