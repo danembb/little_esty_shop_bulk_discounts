@@ -79,6 +79,7 @@ RSpec.describe 'merchant bulk discount show page' do
     fill_in("quantity_threshold", with: 16)
 
     click_on "Update Discount"
+    
     expect(current_path).to eq(merchant_bulk_discount_path(@merchant1, @bulk_discount1))
     expect(page).to have_content(20)
     expect(page).to have_content(16)

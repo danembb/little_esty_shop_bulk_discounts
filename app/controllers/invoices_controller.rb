@@ -9,12 +9,16 @@ class InvoicesController < ApplicationController
   def show
     @customer = @invoice.customer
     @invoice_item = InvoiceItem.where(invoice_id: params[:id]).first
+    @merchant = Merchant.find(params[:merchant_id])
+    @invoice = Invoice.find(params[:id])
+    @total_discounted_revenue = @merchant.total_discounted_revenue(@invoice.id)
   end
 
   def update
     @invoice.update(invoice_params)
     redirect_to merchant_invoice_path(@merchant, @invoice)
   end
+
 
   private
   def invoice_params
@@ -29,4 +33,6 @@ class InvoicesController < ApplicationController
   def find_merchant
     @merchant = Merchant.find(params[:merchant_id])
   end
+
+
 end
