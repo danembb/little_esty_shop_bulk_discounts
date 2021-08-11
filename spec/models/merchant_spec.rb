@@ -63,7 +63,7 @@ describe Merchant do
 
       @bulk_discount1 = @merchant1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 8)
       @bulk_discount2 = @merchant1.bulk_discounts.create!(percentage_discount: 10, quantity_threshold: 20)
-      @bulk_discount2 = @merchant1.bulk_discounts.create!(percentage_discount: 5, quantity_threshold: 30)
+      @bulk_discount3 = @merchant1.bulk_discounts.create!(percentage_discount: 5, quantity_threshold: 30)
     end
     it "can list items ready to ship" do
       expect(@merchant1.ordered_items_to_ship).to eq([@item_1, @item_1, @item_3, @item_4, @item_7, @item_8, @item_4])
