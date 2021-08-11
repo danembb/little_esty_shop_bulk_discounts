@@ -88,5 +88,10 @@ describe Merchant do
 
       expect(@merchant1.max_discount_for_quantity(100)).to eq(20)
     end
+
+    it "#total_discounted_revenue(invoice)" do
+
+      expect(@merchant1.total_discounted_revenue(@invoice_1)).to eq(72.0)
+    end
   end
 end
