@@ -84,9 +84,4 @@ describe 'Admin Invoices Index Page' do
     expect(page).to have_content(@i1.total_revenue)
     expect(page).to have_content(@m1.total_discounted_revenue(@i1))
   end
-
-  it "#distinct_merchant" do
-
-    expect(@i1.distinct_merchant).to eq(@m1)
-  end
 end
