@@ -29,7 +29,7 @@ RSpec.describe InvoiceItem, type: :model do
 
     @item_5 = Item.create!(name: "Bracelet", description: "Wrist bling", unit_price: 200, merchant_id: @merchant2.id)
     @item_6 = Item.create!(name: "Necklace", description: "Neck bling", unit_price: 300, merchant_id: @merchant2.id)
-    @item_7 = Item.create!(name: "Super Star", description: "Its-a-me", unit_price: 100, merchant_id: @merchant2.id)
+    @item_9 = Item.create!(name: "Super Star", description: "Its-a-me", unit_price: 100, merchant_id: @merchant2.id)
 
     @customer_1 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
     @customer_2 = Customer.create!(first_name: 'Cecilia', last_name: 'Jones')
@@ -60,7 +60,7 @@ RSpec.describe InvoiceItem, type: :model do
     @ii_11 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_8.id, quantity: 12, unit_price: 6, status: 1)
     @ii_12 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_5.id, quantity: 4, unit_price: 200, status: 1)
     @ii_13 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_3.id, quantity: 20, unit_price: 5, status: 1)
-    @ii_14 = InvoiceItem.create!(invoice_id: @invoice_7.id, item_id: @item_7.id, quantity: 29, unit_price: 100, status: 1)
+    @ii_14 = InvoiceItem.create!(invoice_id: @invoice_7.id, item_id: @item_9.id, quantity: 29, unit_price: 100, status: 1)
 
     @transaction1 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_1.id)
     @transaction2 = Transaction.create!(credit_card_number: 230948, result: 1, invoice_id: @invoice_2.id)
