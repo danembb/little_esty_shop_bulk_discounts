@@ -29,6 +29,7 @@ RSpec.describe InvoiceItem, type: :model do
 
     @item_5 = Item.create!(name: "Bracelet", description: "Wrist bling", unit_price: 200, merchant_id: @merchant2.id)
     @item_6 = Item.create!(name: "Necklace", description: "Neck bling", unit_price: 300, merchant_id: @merchant2.id)
+    @item_9 = Item.create!(name: "Super Star", description: "Its-a-me", unit_price: 100, merchant_id: @merchant2.id)
 
     @customer_1 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
     @customer_2 = Customer.create!(first_name: 'Cecilia', last_name: 'Jones')
@@ -59,6 +60,7 @@ RSpec.describe InvoiceItem, type: :model do
     @ii_11 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_8.id, quantity: 12, unit_price: 6, status: 1)
     @ii_12 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_5.id, quantity: 4, unit_price: 200, status: 1)
     @ii_13 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_3.id, quantity: 20, unit_price: 5, status: 1)
+    @ii_14 = InvoiceItem.create!(invoice_id: @invoice_7.id, item_id: @item_9.id, quantity: 29, unit_price: 100, status: 1)
 
     @transaction1 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_1.id)
     @transaction2 = Transaction.create!(credit_card_number: 230948, result: 1, invoice_id: @invoice_2.id)
@@ -72,6 +74,8 @@ RSpec.describe InvoiceItem, type: :model do
     @bulk_discount1 = @merchant1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 8)
     @bulk_discount2 = @merchant1.bulk_discounts.create!(percentage_discount: 10, quantity_threshold: 20)
     @bulk_discount3 = @merchant1.bulk_discounts.create!(percentage_discount: 5, quantity_threshold: 30)
+    @bulk_discount4 = @merchant2.bulk_discounts.create!(percentage_discount: 15, quantity_threshold: 15)
+    @bulk_discount5 = @merchant2.bulk_discounts.create!(percentage_discount: 25, quantity_threshold: 30)
   end
 
   describe "#instance_methods" do
@@ -81,5 +85,19 @@ RSpec.describe InvoiceItem, type: :model do
       expect(@ii_1.meets_threshold.percentage_discount).to eq(20)
       expect(@ii_1.meets_threshold.quantity_threshold).to eq(8)
     end
+
+    it "#qualified_for_discount" do
+
+      expect(@ii_1.qualified_for_discount?).to eq(true)
+      expect(@ii_2.qualified_for_discount?).to eq(false)
+      expect(@ii_13.qualified_for_discount?).to eq(true)
+    end
+
+    it "#max_discount_for_quantity" do
+      expect(@ii_1.max_discount_for_quantity(100)).to eq(20)
+      expect(@ii_14.max_discount_for_quantity(29)).to eq(15)
+    end
+
   end
+
 end

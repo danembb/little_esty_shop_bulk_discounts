@@ -65,6 +65,7 @@ describe Merchant do
       @bulk_discount2 = @merchant1.bulk_discounts.create!(percentage_discount: 10, quantity_threshold: 20)
       @bulk_discount3 = @merchant1.bulk_discounts.create!(percentage_discount: 5, quantity_threshold: 30)
     end
+
     it "can list items ready to ship" do
       expect(@merchant1.ordered_items_to_ship).to eq([@item_1, @item_1, @item_3, @item_4, @item_7, @item_8, @item_4])
     end
@@ -74,24 +75,8 @@ describe Merchant do
       end
       expect(expected).to eq([@customer_1.first_name, @customer_2.first_name, @customer_3.first_name, @customer_4.first_name, @customer_6.first_name])
     end
-
     it "top_5_items" do
       expect(@merchant1.top_5_items).to eq([@item_1, @item_2, @item_3, @item_8, @item_4])
-    end
-
-    it "#minimum_quantity_for_discount" do
-
-      expect(@merchant1.minimum_quantity_for_discount).to eq(8)
-    end
-
-    it "#max_discount_for_quantity" do
-
-      expect(@merchant1.max_discount_for_quantity(100)).to eq(20)
-    end
-
-    it "#total_discounted_revenue(invoice)" do
-
-      expect(@merchant1.total_discounted_revenue(@invoice_1)).to eq(72.0)
     end
   end
 end

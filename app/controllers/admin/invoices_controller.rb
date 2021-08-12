@@ -6,9 +6,6 @@ class Admin::InvoicesController < ApplicationController
 
   def show
     @invoice = Invoice.find(params[:id])
-    @customer = Customer.find(@invoice.customer_id)
-    @merchant = @invoice.distinct_merchant
-    @total_discounted_revenue = @merchant.total_discounted_revenue(@invoice.id)
   end
 
   def edit
