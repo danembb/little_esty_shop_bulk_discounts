@@ -11,7 +11,7 @@ class InvoicesController < ApplicationController
     @invoice_item = InvoiceItem.where(invoice_id: params[:id]).first
     @merchant = Merchant.find(params[:merchant_id])
     @invoice = Invoice.find(params[:id])
-    @total_discounted_revenue = @merchant.total_discounted_revenue(@invoice.id)
+    @merchant_invoice_items = @merchant.invoice_items.where('invoice_id = ?', @invoice)
   end
 
   def update

@@ -44,6 +44,9 @@ RSpec.describe 'invoices show' do
     @ii_11 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_8.id, quantity: 12, unit_price: 6, status: 1)
     @ii_12 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_5.id, quantity: 4, unit_price: 200, status: 1)
     @ii_13 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_3.id, quantity: 20, unit_price: 5, status: 1)
+    @ii_14 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_4.id, quantity: 2, unit_price: 1, status: 1)
+
+    @merchant1_invoice_items = @merchant1.invoice_items.where('invoice_id = ?', @invoice_1)
 
     @transaction1 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_1.id)
     @transaction2 = Transaction.create!(credit_card_number: 230948, result: 1, invoice_id: @invoice_2.id)
@@ -57,6 +60,8 @@ RSpec.describe 'invoices show' do
     @bulk_discount1 = @merchant1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 8)
     @bulk_discount2 = @merchant1.bulk_discounts.create!(percentage_discount: 10, quantity_threshold: 20)
     @bulk_discount3 = @merchant1.bulk_discounts.create!(percentage_discount: 5, quantity_threshold: 30)
+    @bulk_discount4 = @merchant2.bulk_discounts.create!(percentage_discount: 15, quantity_threshold: 15)
+    @bulk_discount5 = @merchant2.bulk_discounts.create!(percentage_discount: 25, quantity_threshold: 30)
   end
 
   it "shows the invoice information" do
@@ -111,9 +116,9 @@ RSpec.describe 'invoices show' do
   # And I see the total discounted revenue for my merchant from this invoice which includes bulk discounts in the calculation x
   it 'can see the total revenue and the total discounted revenue including bulk discount in-calculation' do
     visit merchant_invoice_path(@merchant1, @invoice_1)
-    
+
     expect(page).to have_content(@invoice_1.total_revenue)
-    expect(page).to have_content(@merchant1.total_discounted_revenue(@invoice_1))
+    expect(page).to have_content(@invoice_1.discounted_revenue(@merchant1_invoice_items))
   end
 
 #   Merchant Invoice Show Page: Link to applied discounts

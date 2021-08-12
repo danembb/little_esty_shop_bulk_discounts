@@ -46,18 +46,9 @@ RSpec.describe Invoice, type: :model do
     end
 
     it "#discounted_revenue(model_invoice_items)" do
-      
+
       expect(@invoice_1.discounted_revenue(@invoices_invoice_items1)).to eq(82.0)
       expect(@invoice_2.discounted_revenue(@invoices_invoice_items2)).to eq(2910.0)
-
-      #how to test to see if an invoice can see multiple merchants' items?
-      # expect(@invoice_2.invoice_items.last.item_id).to eq(18852)
-      # expect(@invoice_2.invoice_items.last.item_id).to eq(18854)
-    end
-
-    it "#distinct_merchant" do
-
-      expect(@invoice_1.distinct_merchant).to eq(@merchant1)
     end
   end
 end

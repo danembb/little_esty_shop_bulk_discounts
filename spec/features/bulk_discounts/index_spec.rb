@@ -50,9 +50,9 @@ RSpec.describe 'merchant bulk discount index page' do
 #   I see a section with a header of "Upcoming Holidays"
 #   In this section the name and date of the next 3 upcoming US holidays are listed.
 #   Use the Next Public Holidays Endpoint in the [Nager.Date API](https://date.nager.at/swagger/index.html)
-    xit 'can see upcoming holidays header' do
-      expect(page).to have_content("Upcoming Holidays")
-    end
+    # xit 'can see upcoming holidays header' do
+    #   expect(page).to have_content("Upcoming Holidays")
+    # end
 
     # Merchant Bulk Discount Create
     # As a merchant x
