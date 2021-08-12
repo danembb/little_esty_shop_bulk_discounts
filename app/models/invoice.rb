@@ -7,6 +7,7 @@ class Invoice < ApplicationRecord
   has_many :invoice_items
   has_many :items, through: :invoice_items
   has_many :merchants, through: :items
+  has_many :bulk_discounts, through: :merchants
 
   enum status: [:cancelled, 'in progress', :completed]
 
@@ -17,5 +18,18 @@ class Invoice < ApplicationRecord
   def distinct_merchant
     merchants.distinct(:name)
              .first
+  end
+
+  def discounted_revenue(model_invoice_items)
+    accumulated_revenue = 0
+
+    model_invoice_items.each do |ii|
+      if ii.qualified_for_discount? == false
+        accumulated_revenue += (ii.quantity * ii.unit_price)
+      else
+        accumulated_revenue += ((ii.quantity * ii.unit_price) - ((ii.quantity * ii.unit_price) * (ii.max_discount_for_quantity(ii.quantity) / 100.00)))
+      end
+    end
+    accumulated_revenue
   end
 end

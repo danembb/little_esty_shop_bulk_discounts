@@ -22,4 +22,19 @@ class InvoiceItem < ApplicationRecord
     .order('bulk_discounts.percentage_discount desc')
     .first
   end
+
+  def qualified_for_discount?
+    merchant = Merchant.where('id = ?', item.merchant_id).first
+    if merchant.bulk_discounts.empty?
+      false
+    else
+      self.quantity >= bulk_discounts.minimum(:quantity_threshold)
+    end
+  end
+
+  def max_discount_for_quantity(quantity)
+    bulk_discounts
+    .where('quantity_threshold <= ?', quantity)
+    .maximum(:percentage_discount)
+  end
 end
